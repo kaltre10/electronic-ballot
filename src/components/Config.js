@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import config from '../images/config.png';
 import home from '../images/home.png';
+import Money from './money/Money';
+import Customers from './customers/Customers';
+import FormData from "./formData/formData";
 
 const Config = () => {
     return ( 
@@ -12,8 +15,10 @@ const Config = () => {
                 </div>
                 <h1>Configuración</h1>
             </div>
-            <div className="container">
-                
+            <div className="container-config">
+                <Money />
+                <Customers />
+                <FormData />
             </div>
         </div>
      );

@@ -8,12 +8,16 @@ const Money = () => {
         {id:2, name: "USD", buy: 3.85, sell: 3.9, main: false},
         {id: 3, name: "CLP", buy: 3.85, sell: 3.9, main: false},
         {id: 4, name: "COP", buy: 3.85, sell: 3.9, main: false},
-        {id: 5, name: "EUR", buy: 4.4, sell: 4.5, main: false},
+        {id: 5, name: "EUR", buy: 4.4, sell: 4.5, main: false}
     ])
 
     return ( 
         <div className="money">
-            <h2>Monedas</h2>
+            <div style={{display: "flex", justifyContent: "center", padding:"20px 0"}}>
+                <h2>Monedas</h2>
+                <button className='btn btn-registrar'>AGREGAR</button>
+            </div>
+            
                 {money.map( money => (
                     <div key={money.id} className='input-money'>
                         <p>{money.name}</p>  

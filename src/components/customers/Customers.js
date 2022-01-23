@@ -13,7 +13,16 @@ const Customers = () => {
         {name: "Jason Hernandez", doc: "PASS", num: 149889214},
         {name: "Jason Hernandez", doc: "PASS", num: 149889214},
         {name: "Jason Hernandez", doc: "PASS", num: 149889214},
-        {name: "Jason Hernandez", doc: "PASS", num: 149889214}
+        {name: "Jason Hernandez", doc: "PASS", num: 149889214},
+        {name: "Jason Hernandez", doc: "PASS", num: 149889214},
+        {name: "Jason Hernandez", doc: "PASS", num: 149889214},
+        {name: "Jason Hernandez", doc: "PASS", num: 149889214},
+        {name: "Jason Hernandez", doc: "PASS", num: 149889214},
+        {name: "Jason Hernandez", doc: "PASS", num: 149889214},
+        {name: "Jason Hernandez", doc: "PASS", num: 149889214},
+        {name: "Jason Hernandez", doc: "PASS", num: 149889214},
+        {name: "Jason Hernandez", doc: "PASS", num: 149889214},
+
     ]);
     return ( 
         <div className='customers'>

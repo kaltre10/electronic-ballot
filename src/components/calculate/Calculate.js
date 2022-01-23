@@ -1,10 +1,10 @@
 import './calculate.css';
 
-const Calculate = () => {
+const Calculate = ({result}) => {
     return ( 
         <div className="calculate-container">
             <p className="title-calculate">Total <span className='sub-title-calculate'>(Dolares)</span></p>
-            <p className="resultado-calculate"><span>$</span> 1250</p>
+            <p className="resultado-calculate"><span>$</span> {result}</p>
             <div className="barra"></div>
         </div>
      );

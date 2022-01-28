@@ -1,10 +1,11 @@
 .modal{
   width: 100%;
   height: 100vh;
-  background-color: #212121;
+  background-color: #2121219e;
   position: absolute;
   top: 0;
-  opacity: 0.6;
   display: grid;
   place-items: center;
+  align-content: center;
+  gap: 30px;
 }

@@ -1,0 +1,31 @@
+.modal-container{
+    background-color: #34495e;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+}
+
+.btn-container{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-danger, .btn-success{
+    width: 100px;
+    border: none;
+    background-color: #ccc;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-danger{
+    background-color: tomato;
+}
+
+.btn-success{
+    background-color: #2ecc71;
+}

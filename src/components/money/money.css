@@ -21,3 +21,10 @@ input[type='checkbox']{
     align-self: center;
     transform: scale(1.5);
 }
+
+.delete-money, .update-money{
+    cursor: pointer;
+}
+.delete-money:hover, .update-money:hover{
+    transform: scale(1.2);
+}

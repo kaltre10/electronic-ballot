@@ -18,7 +18,7 @@ const postApi = ({
             centSingular: 'CENTIMO'
           });
 
-        const token = "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NDI5NTExODIsImV4cCI6NDc5NjU1MTE4MiwidXNlcm5hbWUiOiJKYXNvbiIsImNvbXBhbnkiOiIxMDAxMjM0NTY3OCJ9.pyC-AashL_VczRTbRxMedZtDs-KapgBnSMIa-EE4Y3aZ9YiMz1S3eaE2CmnvwlkbCiCIJ7trUEEaW17-GGd4WDSf3dEPZF8ZJiiLDJc6Weuzxo0lebyLdXA2HX5bvteHMVpcKV1mXmudMDwAe9rdGm0oQNrAG30oJTZOYNRYeBkzSdtXmKAxQcqSecq-_nDzIVe-1taeB2LFi7r15zg9zMD5X64_72lK4LLSYZFFYCB6t6YZeOyGP66OJqEQBda0_sZkkidX54T0oZdv5EULpM8s_tBeewCsb4859z1MZCcUjxZ8YN2qRH7pznLM74fpPc55ECEDfr9AzvSAGNDCmAdiWJDCMFgrkpgjyv9FdO8TBm6TgXwcsBsqKUrTHm4Bga-H_EtzKTJ9Ze2c0_dOKF6YZz2SdJzkuu-cJvKDHU6Xs94sCL23_xtVxN_hFbOwaC8kJxdQWqxOWhv2ZLUWDV6tjaKUzijxwGvS1mDkrXGqccGqOADnJVg7mNx1gRLFZmCg-t4FWPawB8VjZnJaEOiYwWEyBRMQpPc0q_JQFZG1M2QN0cbfkmM7m-o7vuet1erPruuXmLh31JVNldIXcV_l9HomEHvk167yFn-kgbyy-rkueMIUWQ11GokpXssJbdZKQLo-bZvpbpa1NmTSCp-kFXd8Tt4OuD06f5Nuy3o";
+        const token = process.env.REACT_APP_TOKEN_API;
   
         const data = {
             "ublVersion": "2.1",
@@ -45,11 +45,11 @@ const postApi = ({
               }
             },
             "company": {
-              "ruc": 10012345678,
-              "razonSocial": "EL FIEL",
-              "nombreComercial": "EL FIEL",
+              "ruc": process.env.REACT_APP_NUMBER,
+              "razonSocial": process.env.REACT_APP_NAME,
+              "nombreComercial": process.env.REACT_APP_COMMERCE,
               "address": {
-                "direccion": "Direccion empresa",
+                "direccion": process.env.REACT_APP_ADDRESS,
                 "provincia": "LIMA",
                 "departamento": "LIMA",
                 "distrito": "LIMA",
@@ -86,9 +86,7 @@ const postApi = ({
             ]
         }
 
-    //https://facturacion.apisperu.com/api/v1/invoice/send
-
-    return fetch('https://facturacion.apisperu.com/api/v1/invoice/pdf',{
+    return fetch(process.env.REACT_APP_URL_API,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +94,6 @@ const postApi = ({
         },
         body: JSON.stringify(data)
     });
-    // console.log(JSON.stringify(data))
 }
 
 export default postApi;

@@ -1,16 +1,13 @@
-import {useState, Fragment} from 'react';
+import {useState, Fragment, useContext} from 'react';
 import Modal from '../../modal';
 import ModalConfirm from '../modalConfirm/ModalConfirm';
 import ModalCustomer from '../modalCustomer/ModalCustomer';
+import { CustomersContext } from '../../context/contexCustomers';
 import './customers.css'
 
 const Customers = () => {
-    const [customers, setCustomers] = useState([
-        {name: "Jason Hernandez", doc: "PASS", num: 149889214},
-        {name: "Jose Hernandez", doc: "PASS", num: 1798214},
-        {name: "Carlos Hernandez", doc: "PASS", num: 1414}
 
-    ]);
+    const { customers, setCustomers } = useContext(CustomersContext);
 
     const [modal, setModal] = useState(false);
     const [modalCustomer, setModalCustomer] = useState(false);
@@ -21,6 +18,7 @@ const Customers = () => {
     const deleteCustomers = (id) => {
         const newCustomers = customers.filter(c => c.num !== id);
         setCustomers(newCustomers);
+        localStorage.setItem('customers', JSON.stringify(newCustomers));
         setModal(false);
     }
 
@@ -48,6 +46,7 @@ const Customers = () => {
             return;
         }
         setCustomers([ ...customers,  formCustomer]);
+        localStorage.setItem('customers', JSON.stringify([ ...customers,  formCustomer]));
         setModalCustomer(false);
         setFormCustomer({ name: '', doc: 'DNI', num: '' });
     }
@@ -90,7 +89,7 @@ const Customers = () => {
                                 <option value="PASS">PASS</option>
                                 <option value="CE">CE</option>
                             </select>
-                            <input className={formError && "input-error"} name='num' placeholder='Numero de Documento' onChange={e => handleFormCurstomer(e)} />
+                            <input type="number" className={formError && "input-error"} name='num' placeholder='Numero de Documento' autoComplete='off' onChange={e => handleFormCurstomer(e)} />
                         </div>
                         <div className='btn-container'>
                             <button className='btn-danger' onClick={() => setModalCustomer(false)}>CERRAR</button>

@@ -1,16 +1,19 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import postApi from '../../utils/postApi'
+import { MonedaContext } from '../../context/contextMoneda'
 import './form.css';
 
 const Form = ({setResult, result, openModal}) => {
 
-    const monedas = [
-        {id: 1, name: "USD", buy: 3.81, sell: 3.88, main: false},
-        {id: 2, name: "PEN", buy: 0, sell: 0, main: true},
-        {id: 3, name: "CLP", buy: 3.85, sell: 3.9, main: false},
-        {id: 4, name: "COP", buy: 3.85, sell: 3.9, main: false},
-        {id: 5, name: "EUR", buy: 4.4, sell: 4.5, main: false}
-    ]
+    const { money } = useContext(MonedaContext);
+
+    const monedas = [ ...money ];
+
+    // {id: 1, name: "PEN", buy: 1, sell: 1, main: true},
+    //     {id: 2, name: "USD", buy: 3.85, sell: 3.9, main: false},
+    //     {id: 3, name: "CLP", buy: 3.85, sell: 3.9, main: false},
+    //     {id: 4, name: "COP", buy: 3.85, sell: 3.9, main: false},
+    //     {id: 5, name: "EUR", buy: 4.4, sell: 4.5, main: false}
 
     const [ form , setForm] = useState({
         selectDoc: 1,
@@ -21,6 +24,7 @@ const Form = ({setResult, result, openModal}) => {
         cantidad: 0,
         cotizacion: monedas[0].buy,
         monedaR: "PEN",
+        cotizacionR: monedas[1].sell,
         recibe: 0,
     });
 
@@ -30,33 +34,79 @@ const Form = ({setResult, result, openModal}) => {
 
 
     const handleInput = e => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
+
+        setForm({   
+            ...form, 
+            [e.target.name]: e.target.value,
         });
+        
+        if(e.target.name === 'moneda' || e.target.name === 'monedaR'){
+            
+            //modificamos el tipo de cambio
+            let cotizacion;
+            if(e.target.name === 'moneda'){
+                cotizacion = monedas.filter(m => m.name == e.target.value)[0];
+            }else{
+                cotizacion = monedas.filter(m => m.name == form.moneda)[0];
+            }
+            
+
+            let monedaRecibe;
+
+            if(e.target.name === 'monedaR'){
+                monedaRecibe = monedas.filter(m => m.name === e.target.value)[0];
+            }else{
+                monedaRecibe = monedas.filter(m => m.name === form.monedaR)[0];
+            }
+           
+
+            if(form.tipo === "COMPRA"){
+                setForm({
+                    ...form, 
+                    cotizacion: parseFloat((cotizacion.buy / monedaRecibe.sell).toFixed(2)),
+                    [e.target.name]: e.target.value,
+                    cotizacionR: monedaRecibe.sell,
+                    recibe: result   
+                })
+            }else{
+                setForm({
+                    ...form, 
+                    cotizacion: parseFloat((cotizacion.sell / monedaRecibe.buy).toFixed(2)),
+                    [e.target.name]: e.target.value,
+                    cotizacionR: monedaRecibe.buy,
+                    recibe: result
+                })
+            }
+        }
     }
 
     const handleTipo = (e) => {
 
-        let newCotizacion = monedas.filter(m => m.name == form.moneda)[0];
-
+        let cotizacion = monedas.filter(m => m.name == form.moneda)[0];
+        let monedaRecibe  = monedas.filter(m => m.name === form.monedaR)[0];
+        
+        
         if(e.target.value === "COMPRA"){
+           
             setForm({
                 ...form, 
-                cotizacion: newCotizacion.buy, 
-                tipo: e.target.value
+                cotizacion: parseFloat((cotizacion.buy / monedaRecibe.sell).toFixed(2)), 
+                [e.target.name]: e.target.value,
+                recibe: result
             })
         }else{
+           
             setForm({
                 ...form, 
-                cotizacion: newCotizacion.sell, 
-                tipo: e.target.value
+                cotizacion: parseFloat((cotizacion.sell / monedaRecibe.buy).toFixed(2)),
+                [e.target.name]: e.target.value,
+                recibe: result
             })
         }
     }
 
     const calculate = () => {
-        setResult(form.cantidad * form.cotizacion);
+        setResult(parseFloat((form.cantidad * form.cotizacion).toFixed(2)));
     };
 
     const handleSubmit = async e => {

@@ -1,19 +1,14 @@
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useContext } from 'react';
 import Modal from '../../modal';
 import ModalConfirm from '../modalConfirm/ModalConfirm';
 import ModalMoney from '../modalMoney/ModalMoney';
 import { v4 as uuidv4 } from 'uuid';
 import './money.css';
+import { MonedaContext } from '../../context/contextMoneda';
 
 const Money = () => {
 
-    const [ money, setMoney ] = useState([
-        {id: 1, name: "PEN", buy: 0, sell: 0, main: true},
-        {id: 2, name: "USD", buy: 3.85, sell: 3.9, main: false},
-        {id: 3, name: "CLP", buy: 3.85, sell: 3.9, main: false},
-        {id: 4, name: "COP", buy: 3.85, sell: 3.9, main: false},
-        {id: 5, name: "EUR", buy: 4.4, sell: 4.5, main: false}
-    ]);
+  const { money, setMoney } = useContext(MonedaContext)
 
     const [ data , setData ] = useState({});
     const [ modal, setModal ] = useState(false);
@@ -35,6 +30,7 @@ const Money = () => {
     const deleteMoney = (id) => {
         const newMoney = money.filter( m => m.id !== id);
         setMoney(newMoney);
+        localStorage.setItem('money', JSON.stringify(newMoney));
         setModal(false);
     }
 
@@ -47,19 +43,22 @@ const Money = () => {
         const newMoney = money.map( m => {
             if(m.id === id){
                 m.main = true;
-                m.sell = 0;
-                m.buy = 0;
+                m.sell = 1;
+                m.buy = 1;
             }else{
                 m.main = false;
             }
             return m;
         })
         setMoney(newMoney);
+        localStorage.setItem('money', JSON.stringify(newMoney));
         setModalMain(false);
     }
 
     const handleUpdate = (id, {buy, sell}) => {
+        
         setModalUpdate(true);
+        if(buy == 0 || sell == 0) return;
         setData({id, buy, sell});
     }
 
@@ -71,6 +70,7 @@ const Money = () => {
             }
             return m;
         })
+        localStorage.setItem('money', JSON.stringify(newMoney));
         setMoney(newMoney);
         setModalUpdate(false);
         setForm({buy: 0, sell: 0});
@@ -79,7 +79,7 @@ const Money = () => {
     const handleFrom = (e) => {
         setForm({
             ...form,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value || 0
         });
     }
 
@@ -87,7 +87,7 @@ const Money = () => {
         setFormError(false);
         setForm({
             ...form,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value.trim()
         });
     }
 
@@ -100,9 +100,13 @@ const Money = () => {
             return;
         }
         setMoney([ ...money,  form]);
+        localStorage.setItem('money', JSON.stringify([ ...money,  form]));
         setModalMoney(false);
         setForm({ name: '', sell: 0, buy: 0 });
     }
+
+    let sell;
+    let buy;
 
     return ( 
         <Fragment>
@@ -111,12 +115,12 @@ const Money = () => {
                 <h2>Monedas</h2>
                 <button className='btn btn-registrar' onClick={ () => setModalMoney(true) }>AGREGAR</button>
             </div>
-            
+                
                 {money.map( money => (
                     <div key={money.id} className='input-money'>
                         <p>{money.name}</p>  
-                        COMPRA:<input name='buy' placeholder={money.buy}  onChange={e => handleFrom(e)} />
-                        VENTA:<input name='sell' placeholder={money.sell}  onChange={e => handleFrom(e)} />
+                        COMPRA:<input type='number' min='0' name='buy' placeholder={money.buy}  onChange={e => handleFrom(e)}  value={buy} />
+                        VENTA:<input type='number' min='0' name='sell' placeholder={money.sell}  onChange={e => handleFrom(e)} value={sell}/>
                         <label>Principal</label>
                         <input type="checkbox" checked={money.main}  onClick={ () => handleMain(money.id) } />
                         {!money.main && <span className='delete-money' onClick={ () => handleBtn(money.id) }> ❌ </span>} 

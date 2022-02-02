@@ -2,13 +2,19 @@ import './App.css';
 import { Routes, Route } from "react-router-dom";
 import Home from './components/Home';
 import Config from './components/Config';
+import { MonedaProvider } from './context/contextMoneda';
+import { CustomersProvider } from './context/contexCustomers';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/config" element={<Config />} />
-    </Routes>
+    <MonedaProvider>
+      <CustomersProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/config" element={<Config />} />
+        </Routes>
+      </CustomersProvider>
+    </MonedaProvider>
   );
 }
 

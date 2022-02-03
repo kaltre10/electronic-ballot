@@ -1,11 +1,13 @@
 import {useState, useEffect, useContext} from 'react';
-import postApi from '../../utils/postApi'
-import { MonedaContext } from '../../context/contextMoneda'
+import postApi from '../../utils/postApi';
+import { MonedaContext } from '../../context/contextMoneda';
+import { CustomersContext } from '../../context/contexCustomers';
 import './form.css';
 
 const Form = ({setResult, result, openModal}) => {
 
     const { money } = useContext(MonedaContext);
+    const { setSearch, setSearchCustomers, handleSearch, searchCustomers, setResultSearch } = useContext(CustomersContext);
 
     const monedas = [ ...money ];
 
@@ -29,6 +31,17 @@ const Form = ({setResult, result, openModal}) => {
     });
 
     useEffect(() => {
+        if(form.customer != '') {
+            setSearch(true);
+         }
+        setSearchCustomers(form.customer);
+        
+        handleSearch();
+
+        if(form.customer == '') {
+            setResultSearch([]);
+            setSearch(false);
+        }
         calculate();
     }, [form]);
 
@@ -39,6 +52,8 @@ const Form = ({setResult, result, openModal}) => {
             ...form, 
             [e.target.name]: e.target.value,
         });
+
+        if(e.target.name === 'customer') return;
         
         if(e.target.name === 'moneda' || e.target.name === 'monedaR'){
             

@@ -10,12 +10,28 @@ const CustomersProvider = (props) => {
             ]));
 
     const [ customers, setCustomers ] = useState(JSON.parse(customersLocal));
+    const [ search, setSearch ] = useState(false);
+    const [ searchCustomers, setSearchCustomers ] = useState('');
+    const [ resultSearch, setResultSearch ] = useState([]);
+
+    const handleSearch = () => {
+        let newArray = customers.map(c => c).filter(c => c.name.toLowerCase().includes(searchCustomers.toLowerCase()));
+        setResultSearch([ ...newArray]);
+         if(searchCustomers === '') setResultSearch([]); 
+     }     
 
     return ( 
         <CustomersContext.Provider
             value={{
                 customers,
-                setCustomers
+                search,
+                searchCustomers,
+                resultSearch,
+                setCustomers,
+                setSearch,
+                setSearchCustomers,
+                handleSearch,
+                setResultSearch  
             }}
         >
             {props.children}

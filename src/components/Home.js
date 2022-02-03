@@ -6,6 +6,7 @@ import config from '../images/config.png';
 import { Link } from "react-router-dom";
 import Modal from '../modal';
 import Load from './load/Load';
+import SearchCustomers from './searchCustomers/SearchCustomers';
 
 const Home = () => {
 
@@ -17,6 +18,7 @@ const Home = () => {
 
     return ( 
         <Fragment>
+        <SearchCustomers />
         <div className="App">
             <div className="header">
                 <div className='ico-config'>

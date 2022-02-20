@@ -88,6 +88,7 @@ const Customers = () => {
                                 <option value="DNI">DNI</option>
                                 <option value="PASS">PASS</option>
                                 <option value="CE">CE</option>
+                                <option value="RUC">RUC</option>
                             </select>
                             <input type="number" className={formError && "input-error"} name='num' placeholder='Numero de Documento' autoComplete='off' onChange={e => handleFormCurstomer(e)} />
                         </div>

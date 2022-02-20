@@ -9,5 +9,5 @@ const Calculate = ({result}) => {
         </div>
      );
 }
- 
+
 export default Calculate;

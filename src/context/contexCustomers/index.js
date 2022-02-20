@@ -13,9 +13,13 @@ const CustomersProvider = (props) => {
     const [ search, setSearch ] = useState(false);
     const [ searchCustomers, setSearchCustomers ] = useState('');
     const [ resultSearch, setResultSearch ] = useState([]);
+    const [ inputCustomers, setInputCustomers ] = useState({name: '', doc: '', num: ''});
 
     const handleSearch = () => {
-        let newArray = customers.map(c => c).filter(c => c.name.toLowerCase().includes(searchCustomers.toLowerCase()));
+        let newArray = customers.map(c => c)
+                                .filter(c => c.name.toLowerCase()
+                                .includes(searchCustomers.toLowerCase()));
+
         setResultSearch([ ...newArray]);
          if(searchCustomers === '') setResultSearch([]); 
      }     
@@ -27,11 +31,13 @@ const CustomersProvider = (props) => {
                 search,
                 searchCustomers,
                 resultSearch,
+                inputCustomers,
                 setCustomers,
                 setSearch,
                 setSearchCustomers,
                 handleSearch,
-                setResultSearch  
+                setResultSearch,
+                setInputCustomers
             }}
         >
             {props.children}

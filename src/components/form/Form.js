@@ -7,7 +7,7 @@ import './form.css';
 const Form = ({setResult, result, openModal}) => {
 
     const { money } = useContext(MonedaContext);
-    const { setSearch, setSearchCustomers, handleSearch, searchCustomers, setResultSearch } = useContext(CustomersContext);
+    const { setSearch, setSearchCustomers, handleSearch, searchCustomers, setResultSearch, resultSearch, inputCustomers, setInputCustomers } = useContext(CustomersContext);
 
     const monedas = [ ...money ];
 
@@ -30,27 +30,58 @@ const Form = ({setResult, result, openModal}) => {
         recibe: 0,
     });
 
-    useEffect(() => {
-        if(form.customer != '') {
-            setSearch(true);
-         }
-        setSearchCustomers(form.customer);
-        
-        handleSearch();
+    let doc;
 
-        if(form.customer == '') {
-            setResultSearch([]);
-            setSearch(false);
-        }
-        calculate();
-    }, [form]);
+    useEffect(() => {
+        (() => {
+            if( form.customer != '' && 
+                inputCustomers.name == '' && 
+                inputCustomers.num == '' &&
+                searchCustomers == ''
+            ) {
+                setSearch(true);
+            }
+
+            setSearchCustomers(form.customer);
+            
+            handleSearch();
+    
+            if(form.customer == '') {
+                setResultSearch([]);
+                setSearch(false);
+            }
+            calculate();
+
+            if(form.numDoc === '' && inputCustomers.name != '' ){
+                console.log(inputCustomers.name)
+                //ajustamos los input del cliente
+                if(inputCustomers.doc == 'DNI') doc = 1;
+                if(inputCustomers.doc == 'PASS') doc = 7;
+                if(inputCustomers.doc == 'CE') doc = 4;
+                if(inputCustomers.doc == 'RUC') doc = 6;
+
+                setForm({   
+                    ...form, 
+                    customer: inputCustomers.name,
+                    numDoc: inputCustomers.num,
+                    selectDoc: doc
+                });
+
+                
+            }
+
+        })();      
+    }, [form, inputCustomers]);
 
 
     const handleInput = e => {
 
+        setInputCustomers({name: '', doc: '', num: ''});
+
         setForm({   
             ...form, 
             [e.target.name]: e.target.value,
+            numDoc: ''
         });
 
         if(e.target.name === 'customer') return;
@@ -93,6 +124,7 @@ const Form = ({setResult, result, openModal}) => {
                 })
             }
         }
+        
     }
 
     const handleTipo = (e) => {
@@ -126,12 +158,30 @@ const Form = ({setResult, result, openModal}) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
+
+        //ajustamos los input del cliente
+        if(inputCustomers.doc == 'DNI') doc = 1;
+        if(inputCustomers.doc == 'PASS') doc = 7;
+        if(inputCustomers.doc == 'CE') doc = 4;
+        if(inputCustomers.doc == 'RUC') doc = 6;
+
+        setForm({   
+            ...form, 
+            customer: inputCustomers.name,
+            numDoc: inputCustomers.num,
+            selectDoc: doc
+        });
+
         openModal(false);
+
         const query = await postApi({...form, result});
         const dataAPi = await query.blob();
         openModal(true);
         pdf(dataAPi);
         
+        document.querySelector('form').reset();
+        setResult(0);
+
     }
 
     const pdf = (dataAPi) => {
@@ -143,7 +193,23 @@ const Form = ({setResult, result, openModal}) => {
         link.click();
         window.URL.revokeObjectURL(objectURL);
         link.remove();
-    }   
+    }  
+    
+    const clearFrom = () => {
+        document.querySelector('form').reset();
+        setForm({
+            ...form,
+            customer: '',
+            numDoc: '',
+            selectDoc: 1,
+            cantidad: 0,
+        });
+        setResult(0);
+    }
+
+    const validation = () => {
+
+    }
 
     return ( 
         <div className="form-container">
@@ -151,13 +217,14 @@ const Form = ({setResult, result, openModal}) => {
                 <p>Datos del Cliente</p>
                 <div className='datos-cliente'> 
                     <label className='label-tipo-doc'>Tipo de Documento</label>
-                    <select name="selectDoc" className='tipo-doc' onChange={ e => handleInput(e)}>
+                    <select disabled name="selectDoc" className='tipo-doc' onChange={ e => handleInput(e)}>
                         <option selected value={1}>DNI</option>
+                        <option selected value={6}>RUC</option>
                         <option value={7}>PASS</option>
                         <option value={4}>CE</option>
                     </select>
                     <input name="numDoc" onChange={ e => handleInput(e)} className='n_doc' type='number' placeholder="Número de Documento" id="" />
-                    <input name="customer" onChange={ e => handleInput(e)} className='nombre_cliente' placeholder="Nombre del Cliente" id="" autoComplete='off' />
+                    <input name="customer" onChange={ e => handleInput(e)} className='nombre_cliente' placeholder="Nombre del Cliente" id="" autoComplete='off' required/>
                 </div>
                 <p>Datos de la operacion</p>
                 <div className='datos-operacion'>
@@ -182,10 +249,10 @@ const Form = ({setResult, result, openModal}) => {
                     </select>
 
                     <label className="label-cantidad">Cantidad</label>
-                    <input name="cantidad" onChange={ e => handleInput(e)} className='cantidad' type='number' placeholder="Cantidad" id="" />
+                    <input name="cantidad" onChange={ e => handleInput(e)} className='cantidad' type='number' placeholder="Cantidad" id="" required/>
 
                     <label className="label-cotizacion">Tipo de Cambio</label>
-                    <input name='cotizacion' onChange={ e => handleInput(e)} value={form.cotizacion} className='cotizacion' type='number' step="0.01" min="0" value={form.cotizacion} />
+                    <input name='cotizacion' onChange={ e => handleInput(e)} value={form.cotizacion} className='cotizacion' type='number' step="0.01" min="0" value={form.cotizacion} required/>
 
                     <label className='label-moneda-recibe'>Moneda</label>
                     <select name='monedaR' onChange={ e => handleInput(e)} className='tipo-moneda-recibe'>
@@ -197,9 +264,9 @@ const Form = ({setResult, result, openModal}) => {
                     </select>
 
                     <label className="label-recibe">Recibe</label>
-                    <input name='recibe' className='recibe' type='number' value={result}/>
+                    <input name='recibe' className='recibe' type='number' value={result} required/>
                     <div className='btn-container'>
-                        <button type='button' className='btn btn-limpiar'>LIMPIAR</button>
+                        <button type='button' onClick={() => clearFrom()} className='btn btn-limpiar'>LIMPIAR</button>
                         <button type='submit' className='btn btn-registrar'>REGISTRAR</button>
                     </div>
                 </div>

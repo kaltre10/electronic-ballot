@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/electronic-ballot/static/css/main.123045e9.css",
+    "main.js": "/electronic-ballot/static/js/main.82074431.js",
+    "index.html": "/electronic-ballot/index.html",
+    "main.123045e9.css.map": "/electronic-ballot/static/css/main.123045e9.css.map",
+    "main.82074431.js.map": "/electronic-ballot/static/js/main.82074431.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.123045e9.css",
+    "static/js/main.82074431.js"
+  ]
+}

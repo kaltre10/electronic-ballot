@@ -7,7 +7,7 @@ import './form.css';
 const Form = ({setResult, result, openModal}) => {
 
     const { money } = useContext(MonedaContext);
-    const { setSearch, setSearchCustomers, handleSearch, searchCustomers, setResultSearch, resultSearch, inputCustomers, setInputCustomers } = useContext(CustomersContext);
+    const { setSearch, setSearchCustomers, handleSearch, searchCustomers, setResultSearch, inputCustomers, setInputCustomers } = useContext(CustomersContext);
 
     const monedas = [ ...money ];
 
@@ -34,10 +34,10 @@ const Form = ({setResult, result, openModal}) => {
 
     useEffect(() => {
         (() => {
-            if( form.customer != '' && 
-                inputCustomers.name == '' && 
-                inputCustomers.num == '' &&
-                searchCustomers == ''
+            if( form.customer !== '' && 
+                inputCustomers.name === '' && 
+                inputCustomers.num === '' &&
+                searchCustomers === ''
             ) {
                 setSearch(true);
             }
@@ -46,7 +46,7 @@ const Form = ({setResult, result, openModal}) => {
             
             handleSearch();
     
-            if(form.customer == '') {
+            if(form.customer === '') {
                 setResultSearch([]);
                 setSearch(false);
             }
@@ -55,10 +55,10 @@ const Form = ({setResult, result, openModal}) => {
             if(form.numDoc === '' && inputCustomers.name != '' ){
                 console.log(inputCustomers.name)
                 //ajustamos los input del cliente
-                if(inputCustomers.doc == 'DNI') doc = 1;
-                if(inputCustomers.doc == 'PASS') doc = 7;
-                if(inputCustomers.doc == 'CE') doc = 4;
-                if(inputCustomers.doc == 'RUC') doc = 6;
+                if(inputCustomers.doc === 'DNI') doc = 1;
+                if(inputCustomers.doc === 'PASS') doc = 7;
+                if(inputCustomers.doc === 'CE') doc = 4;
+                if(inputCustomers.doc === 'RUC') doc = 6;
 
                 setForm({   
                     ...form, 
@@ -91,9 +91,9 @@ const Form = ({setResult, result, openModal}) => {
             //modificamos el tipo de cambio
             let cotizacion;
             if(e.target.name === 'moneda'){
-                cotizacion = monedas.filter(m => m.name == e.target.value)[0];
+                cotizacion = monedas.filter(m => m.name === e.target.value)[0];
             }else{
-                cotizacion = monedas.filter(m => m.name == form.moneda)[0];
+                cotizacion = monedas.filter(m => m.name === form.moneda)[0];
             }
             
 
@@ -160,10 +160,10 @@ const Form = ({setResult, result, openModal}) => {
         e.preventDefault();
 
         //ajustamos los input del cliente
-        if(inputCustomers.doc == 'DNI') doc = 1;
-        if(inputCustomers.doc == 'PASS') doc = 7;
-        if(inputCustomers.doc == 'CE') doc = 4;
-        if(inputCustomers.doc == 'RUC') doc = 6;
+        if(inputCustomers.doc === 'DNI') doc = 1;
+        if(inputCustomers.doc === 'PASS') doc = 7;
+        if(inputCustomers.doc === 'CE') doc = 4;
+        if(inputCustomers.doc === 'RUC') doc = 6;
 
         setForm({   
             ...form, 

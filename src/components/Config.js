@@ -12,8 +12,8 @@ const Config = () => {
             <div className="App">
                 <div className="header">
                     <div className='ico-config'>
-                        <Link to='/'><img src={home} /></Link>
-                        <Link to='/config'><img src={config} /></Link>
+                        <Link to='/'><img src={home} alt="" /></Link>
+                        <Link to='/config'><img src={config} alt="" /></Link>
                     </div>
                     <h1>Configuración</h1>
                 </div>

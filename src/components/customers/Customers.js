@@ -41,7 +41,7 @@ const Customers = () => {
 
     const addCustomer = () => {
         const { name, doc, num } = formCustomer;
-        if(name == '' || doc == '' || num == ''){
+        if(name === '' || doc === '' || num === ''){
             setFormError(true);
             return;
         }

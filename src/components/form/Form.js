@@ -207,10 +207,6 @@ const Form = ({setResult, result, openModal}) => {
         setResult(0);
     }
 
-    const validation = () => {
-
-    }
-
     return ( 
         <div className="form-container">
             <form onSubmit={ e => handleSubmit(e) }>

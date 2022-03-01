@@ -10,7 +10,7 @@ function App() {
     <MonedaProvider>
       <CustomersProvider>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/electronic-ballot" element={<Home />} />
           <Route path="/config" element={<Config />} />
         </Routes>
       </CustomersProvider>
